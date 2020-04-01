@@ -8,9 +8,64 @@ logging.basicConfig(format=FORMAT)
 logger.setLevel(logging.ERROR)
 
 
-###############################
+################################
 # wrangling methods used in:
 #  - income_distribution.ipynb
+################################
+
+def get_persons_per_income_group(df):
+    """Formats cumulative bins (e.g. <50k) to 25k incremental bins (e.g. >25-50k)."""
+    df["VALUE"].values[1:-1] = df["VALUE"].values[1:-1] - df["VALUE"].values[2:]
+    return df
+
+
+def create_income_bins(y):
+    raw_income_bins = 13
+    # sum 0:5, 5:7, and then take individual values
+    logger.info("create_income_bins()")
+    logger.debug(f"y: /n {y}")
+    if len(y)==raw_income_bins:
+        y = np.add.reduceat(y, [0,5,7,8,9,10,11,12])
+        return y
+    elif len(y)==0:
+        return np.array([np.nan]*13)
+    else: return y
+
+def add_gaps(y):
+    # some empty values for discontinuities
+    y = np.insert(y, [4, 7], [np.nan])
+    return y
+
+
+def normalize_plot_data(y):
+    y = np.divide(y, np.sum(y))
+    return y
+
+
+def format_hist_data(df):
+    df = get_persons_per_income_group(df)
+    y = df.VALUE.values
+    y_hist = normalize_plot_data(y)
+    return y_hist
+
+
+def preprocess_income_bin_data(df):
+    y_hist = format_hist_data(df)
+    y_hist = create_income_bins(y_hist)
+    y_cumulative = np.cumsum(y_hist)
+    y_hist = add_gaps(y_hist)
+    y_cumulative = add_gaps(y_cumulative)
+    return y_hist, y_cumulative
+
+
+def subset_plot_data_for_income_bins(df, year, age, sex, geo, income_to_plot, cols_to_keep):
+    df = df.loc[:,cols_to_keep]
+    df = subset_year_age_sex_geo(df, year, age, sex, geo)
+    df = get_income_to_plot_for_hist(df, income_to_plot)
+    return df
+
+###############################
+# wrangling methods used in:
 #  - median_income.ipynb
 ###############################
 def subset_rows(df, column, value)->np.ndarray:
@@ -21,7 +76,7 @@ def subset_rows(df, column, value)->np.ndarray:
     value : str
     
     """
-    mask = df[column] == value
+    mask = (df[column] == value)
     return mask.values
 
 
@@ -57,11 +112,6 @@ def get_income_to_plot_for_scatter(df, income_to_plot):
     df = df[df["Statistics"].isin(income_to_plot)]
     return df
 
-def subset_plot_data_for_income_bins(df, year, age, sex, geo, income_to_plot, cols_to_keep):
-    df = df.loc[:,cols_to_keep]
-    df = subset_year_age_sex_geo(df, year, age, sex, geo)
-    df = get_income_to_plot_for_hist(df, income_to_plot)
-    return df
 
 def subset_plot_data_for_scatter_plot(
     df, year, age, sex, geo,
