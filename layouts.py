@@ -3,7 +3,10 @@ import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 
 # local imports
-from load_data import income_distribution_dropdown_values
+from load_data import (
+    income_distribution_dropdown_values,
+    median_income_dropdown_values
+)
 
 
 # we use the Row and Col components to construct the sidebar header
@@ -115,8 +118,8 @@ income_distribution_dropdown = html.Div([
 layout2 = html.Div([
     html.H3("Income distribution"),
     income_distribution_dropdown,
-    dcc.Graph(id="income-distribution"),
-    dcc.Graph(id="cumulative-distribution")
+    dcc.Loading(dcc.Graph(id="income-distribution"), type='circle', fullscreen=True),
+    dcc.Loading(dcc.Graph(id="cumulative-distribution"), type='dot')
     
 ])
 
@@ -124,8 +127,33 @@ layout2 = html.Div([
 ################
 # Layout 3: median income
 ################
+median_income_dropdown = html.Div([
+    dcc.Dropdown(
+        id='page3-geo',
+        placeholder="Select location",
+        options=get_dropdown_options(median_income_dropdown_values["GEO"]),
+        value=[
+            'Ottawa-Gatineau, Ontario/Quebec',
+            'Vancouver, British Columbia'],
+        multi=True
+    ),
+    dcc.Dropdown(
+        id='page3-age',
+        placeholder="Select age group",
+        options=get_dropdown_options(median_income_dropdown_values["Age group"]),
+        value='35 to 44 years',
+    ),
+    dcc.Dropdown(
+        id='page3-sex',
+        placeholder="Select sex",
+        options=get_dropdown_options(median_income_dropdown_values["Sex"]),
+        value=["Males", "Females"],
+        multi=True
+        )
+])
+
 layout3 = html.Div([
     html.H3("Median income"),
-    dcc.Graph(id="median-income")
-    
+    median_income_dropdown,
+    dcc.Loading(dcc.Graph(id="median-income"), type='circle', fullscreen=True)
 ])

@@ -123,6 +123,12 @@ def subset_plot_data_for_scatter_plot(
     return df
 
 
+def subset_for_scatter_plot(df, year, income_source, income_to_plot, cols_to_keep):
+    df = df.loc[:,cols_to_keep]
+    df = df[df["Income source"]==income_source]
+    df = df[df["Statistics"]==income_to_plot]
+    return df
+
 ##########################
 # wrangling for small multiples plots
 # code used in Plotting_mpl.ipynb and 

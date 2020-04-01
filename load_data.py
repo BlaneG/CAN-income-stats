@@ -1,6 +1,7 @@
 import requests, zipfile, io
 import pandas as pd
 import os
+import numpy as np
 
 
 def get_csv_zip_url(table_id):
@@ -153,3 +154,37 @@ income_distribution_dropdown_values = { \
     "year_values": [2000, 2001, 2002, 2003, 2004, 2005, 2006,
         2007, 2008, 2009, 2010,
         2011, 2012, 2013, 2014, 2015, 2016, 2017]}
+
+
+median_income_dropdown_values = {
+    'REF_DATE': np.array([
+        1976, 1977, 1978, 1979, 1980, 1981, 1982, 1983, 1984, 1985, 1986,
+        1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997,
+        1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
+        2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018],
+               dtype=int),
+    'GEO': np.array([
+        'Canada', 'Atlantic provinces', 'Newfoundland and Labrador',
+        'Prince Edward Island', 'Nova Scotia', 'New Brunswick', 'Quebec',
+        'Ontario', 'Prairie provinces', 'Manitoba', 'Saskatchewan',
+        'Alberta', 'British Columbia', 'Québec, Quebec',
+        'Montréal, Quebec', 'Ottawa-Gatineau, Ontario/Quebec',
+        'Toronto, Ontario', 'Winnipeg, Manitoba', 'Calgary, Alberta',
+        'Edmonton, Alberta', 'Vancouver, British Columbia'], dtype=object),
+    'Sex': np.array(['Both sexes', 'Males', 'Females'], dtype=object),
+    'Age group': np.array([
+        '16 years and over', '16 to 24 years', '25 to 54 years',
+        '25 to 34 years', '35 to 44 years', '45 to 54 years',
+        '55 to 64 years', '65 years and over'], dtype=object),
+    'Income source': np.array([
+        'Total income', 'Market income', 'Employment income',
+        'Wages, salaries and commissions', 'Self-employment income',
+        'Investment income', 'Retirement income', 'Other income',
+        'Government transfers',
+        "Old Age Security (OAS) and Guaranteed Income Supplement (GIS), Spouse's Allowance (SPA)",
+        'Canada Pension Plan (CPP) and Quebec Pension Plan (QPP) benefits',
+        'Child benefits', 'Employment Insurance (EI) benefits',
+        'Social assistance', 'Other government transfers'], dtype=object),
+    'Statistics': np.array([
+        'Average income (excluding zeros)',
+        'Median income (excluding zeros)'], dtype=object)}
