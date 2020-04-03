@@ -9,6 +9,7 @@ from app import app
 from layouts import layout1, layout2, layout3, sidebar
 import callbacks
 
+server = app.server
 content = html.Div(id="page-content")
 app.layout = html.Div([dcc.Location(id="url"), sidebar, content])
 
