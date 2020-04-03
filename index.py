@@ -18,12 +18,6 @@ server.secret_key = os.environ.get('SECRET_KEY', key)
 content = html.Div(id="page-content")
 app.layout = html.Div([dcc.Location(id="url"), sidebar, content])
 
-# Since we're adding callbacks to elements that don't exist in the app.layout,
-# Dash will raise an exception to warn us that we might be
-# doing something wrong.
-# In this case, we're adding the elements through a callback, so we can ignore
-# the exception.
-app.config.suppress_callback_exceptions = True
 
 # this callback uses the current pathname to set the active state of the
 # corresponding nav link to true, allowing users to tell see page they are on
