@@ -1,7 +1,9 @@
 # Income distributions in Canada
 
 ## Summary
-This repository contains dashboards that allow users to explore personal income statistics using data from Statistics Canada:
+This repostiory was developed to explore total personal income statistics provided by Statistics Canada.  The main result is a Dash application which can be found [here](add-path-to-app).
+
+The income statistics are based on total personal income (line X of a Canadian income tax return) from the following tables:
 - [Tax filers and dependants with income by total income, sex and age](https://doi.org/10.25318/1110000801-eng).
 - [Income of individuals by age group, sex and income source, Canada, provinces and selected census metropolitan areas](https://doi.org/10.25318/1110023901-eng)
 

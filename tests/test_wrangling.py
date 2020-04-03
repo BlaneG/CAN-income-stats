@@ -4,7 +4,8 @@ import pytest
 
 from ..wrangling import (
     subset_plot_data_for_income_bins,
-    subset_plot_data_for_scatter_plot
+    subset_plot_data_for_scatter_plot,
+    subset_year_age_sex_geo
 )
 def test_subset_plot_data_for_income_bins():
 
@@ -106,33 +107,10 @@ def test_subset_plot_data_for_income_bins():
     year = 2017
     geo = "Canada"
     sex = "Females"
+    
 
-    cols_to_keep = ['REF_DATE', 
-                      'GEO', 
-                      'Sex', 
-                      'Age group', 
-                      'Persons with income',
-                      'SCALAR_FACTOR', 
-                      'VALUE', 
-                     ]
-
-    income_to_plot = ["Persons with income under $5,000",
-                                "Persons with income of $5,000 and over",
-                                "Persons with income of $10,000 and over",
-                                "Persons with income of $15,000 and over",
-                                "Persons with income of $20,000 and over",
-                                "Persons with income of $25,000 and over",
-                                "Persons with income of $35,000 and over",
-                                "Persons with income of $50,000 and over",
-                                "Persons with income of $75,000 and over",
-                                "Persons with income of $100,000 and over",
-                                "Persons with income of $150,000 and over",
-                                "Persons with income of $200,000 and over",
-                                "Persons with income of $250,000 and over"]
-
-    df = subset_plot_data_for_income_bins(
-        df, year, age, sex, geo,
-        income_to_plot, cols_to_keep)
+    df = subset_year_age_sex_geo(df, year, age, sex, geo)
+    df = subset_plot_data_for_income_bins(df)
     assert expected_result == df.to_dict()
 
 

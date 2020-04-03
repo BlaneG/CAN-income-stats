@@ -4,9 +4,9 @@ import plotly.express as px
 
 # local imports
 from wrangling import (
-    subset_plot_data_for_income_bins,
     preprocess_income_bin_data,
-    subset_plot_data_for_scatter_plot
+    subset_plot_data_for_scatter_plot,
+    subset_year_age_sex_geo
 )
 
 
@@ -37,31 +37,7 @@ def create_bar_chart(df, year, age, sex, geo)->go.Figure:
          "100-150k", "150-200k", "200-250k",
          "...",
          ">250k"]
-    
-    cols_to_keep = ['REF_DATE', 
-                    'GEO', 
-                    'Sex', 
-                    'Age group', 
-                    'Persons with income',
-                    'SCALAR_FACTOR', 
-                    'VALUE', 
-                    ]
 
-    income_to_plot = ["Persons with income under $5,000",
-                                "Persons with income of $5,000 and over",
-                                "Persons with income of $10,000 and over",
-                                "Persons with income of $15,000 and over",
-                                "Persons with income of $20,000 and over",
-                                "Persons with income of $25,000 and over",
-                                "Persons with income of $35,000 and over",
-                                "Persons with income of $50,000 and over",
-                                "Persons with income of $75,000 and over",
-                                "Persons with income of $100,000 and over",
-                                "Persons with income of $150,000 and over",
-                                "Persons with income of $200,000 and over",
-                                "Persons with income of $250,000 and over"]
-
-    df = subset_plot_data_for_income_bins(df, year, age, sex, geo, income_to_plot, cols_to_keep)
     y_hist, y_cumulative = preprocess_income_bin_data(df)
     fig_hist = go.Figure([go.Bar(x=x, y=y_hist)])
     fig_cumulative = go.Figure([go.Bar(x=x, y=y_cumulative)])
@@ -99,3 +75,4 @@ def create_scatter_plot(df, sex, age, geo)->go.Figure:
     fig.update_layout(legend_title='Location')
     
     return fig
+    
