@@ -1,3 +1,6 @@
+import os
+
+# 3rd party packages
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
@@ -10,6 +13,8 @@ from layouts import layout1, layout2, layout3, sidebar
 import callbacks
 
 server = app.server
+key = os.urandom(24)
+server.secret_key = os.environ.get('SECRET_KEY', key)
 content = html.Div(id="page-content")
 app.layout = html.Div([dcc.Location(id="url"), sidebar, content])
 
