@@ -19,7 +19,7 @@ def get_persons_per_income_group(df):
     return df
 
 
-def create_income_bins(y):
+def create_income_bins(y)->np.array:
     raw_income_bins = 13
     # sum 0:5, 5:7, and then take individual values
     logger.info("create_income_bins()")
@@ -37,19 +37,25 @@ def add_gaps(y):
     return y
 
 
-def normalize_plot_data(y):
+def normalize_plot_data(y)->np.array:
     y = np.divide(y, np.sum(y))
     return y
 
 
-def format_hist_data(df):
+def format_hist_data(df)->np.array:
     df = get_persons_per_income_group(df)
     y = df.VALUE.values
     y_hist = normalize_plot_data(y)
     return y_hist
 
 
-def preprocess_income_bin_data(df):
+def preprocess_income_bin_data(df)->tuple:
+    """Process the data for plotting.
+
+    Returns
+    ---------
+    tuple of np.arrays
+    """
     y_hist = format_hist_data(df)
     y_hist = create_income_bins(y_hist)
     y_cumulative = np.cumsum(y_hist)
@@ -58,7 +64,8 @@ def preprocess_income_bin_data(df):
     return y_hist, y_cumulative
 
 
-def subset_plot_data_for_income_bins(df):
+def subset_plot_data_for_income_bins(df)->pd.DataFrame:
+    """Used in make_data.py to subset the raw data."""
     cols_to_keep = ['REF_DATE', 
                     'GEO', 
                     'Sex', 
@@ -110,7 +117,9 @@ def subset_GEO(df, geo):
 
 
 def subset_Sex(df, sex):
-    return subset_rows(df, "Sex", sex)
+    # return subset_rows(df, "Sex", sex)
+    logger.debug(f"sex: {sex}")
+    return df["Sex"].isin(sex)
 
 
 def subset_Age(df, age):

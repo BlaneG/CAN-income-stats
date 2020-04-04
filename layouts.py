@@ -212,7 +212,7 @@ layout3 = html.Div([
     median_income_dropdown,
     html.Div(
         dcc.Loading(dcc.Graph(id="median-income"), type='circle', fullscreen=True),
-        style={'width':'90%'})
+        style={'width':'100%'})
 ])
 
 
