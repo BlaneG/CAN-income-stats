@@ -171,7 +171,7 @@ layout2 = html.Div([
         dcc.Loading(dcc.Graph(id="income-distribution"), type='circle'),
         style={'width':'90%'}),
     html.Div(
-        dcc.Loading(dcc.Graph(id="cumulative-distribution"), type='dot'),
+        dcc.Graph(id="cumulative-distribution"), type='dot',
         style={'width':'90%'}
     )
     
@@ -211,7 +211,7 @@ layout3 = html.Div([
     html.H3("Median income"),
     median_income_dropdown,
     html.Div(
-        dcc.Loading(dcc.Graph(id="median-income"), type='circle', fullscreen=True),
+        dcc.Loading(dcc.Graph(id="median-income"), type='circle'),
         style={'width':'100%'})
 ])
 
