@@ -9,7 +9,13 @@ import dash_bootstrap_components as dbc
 
 # local imports
 from app import app
-from layouts import layout1, layout2, layout3, sidebar
+from layouts import (
+    layout1,
+    layout2,
+    layout3,
+    layout4,
+    sidebar
+)
 import callbacks
 
 server = app.server
@@ -40,6 +46,8 @@ def render_page_content(pathname):
         return layout2
     elif pathname == "/page-3":
         return layout3
+    elif pathname == "/page-4":
+        return layout4
     # If the user tries to reach a different page, return a 404 message
     return dbc.Jumbotron(
         [

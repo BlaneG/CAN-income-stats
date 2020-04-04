@@ -52,7 +52,8 @@ sidebar = html.Div(
                 [
                     dbc.NavLink("About", href="/page-1", id="page-1-link"),
                     dbc.NavLink("Income distribution", href="/page-2", id="page-2-link"),
-                    dbc.NavLink("Median income statistics", href="/page-3", id="page-3-link"),
+                    dbc.NavLink("Median income", href="/page-3", id="page-3-link"),
+                    dbc.NavLink("References", href="/page-4", id="page-4-link"),
                 ],
                 vertical=True,
                 pills=True,
@@ -67,18 +68,48 @@ sidebar = html.Div(
 
 layout1 = html.Div([
     html.H3("About"),
-    html.P("This website summarizes Canadian personal income \
-            statistics using data provided by Statistics Canada."),
-    html.P("Unless it is defined otherwise, income refers to \
-            'total personal income' which includes:"),
+    html.P("This aim of this site is to help make some of the personal \
+            income statistics from Statistics Canada more accessible to \
+            Canadians."),
+    html.H5("Income distribution"),
+    dcc.Markdown("The *Income distribution* page is based on 'total income' from \
+        income tax returns and includes [(ref)](https://www150.statcan.gc.ca/n1/en/catalogue/72-212-X):"),
     dcc.Markdown("\
             - employment income (salaries, commission), \n \
-            - self employment income, pension income \
+            - self employment income, \n \
+            - pension income \
                 (OAS, CPP/QPP, registered pension plans, RRIFs), \n \
             - investment income, \n \
             - social benefit payments (EI, workers' compensation, \
-                social assisstance), and \n \
-            - other income.")
+                social assistance), and \n \
+            - other income."),
+    dcc.Markdown("There is an important caveat about the definition of 'total income' \
+        that is relevant when interpreting these statistics. Let's consider two \
+        people with different income and pension benefits:"),
+    dcc.Markdown("\
+            - Person 1:  $70,000 total income, no pension, contributes $10,000 of their \
+                income to RRSPs, \n \
+            - Person 2:  $60,000 total income, receives a defined benefit \
+                pension worth $10,000"),
+    dcc.Markdown("At the end of the day these individuals have the same disposal \
+        income, and presumably similar potential future income from their \
+        pensions.  Based on StatCans 'total income' statistics, Person 1 has higher \
+        'total income'.  The employment Person 1 uses \
+        to make RRSP and RPP contributions counts as 'total income' \
+        in the year it is earned, but also again when it \
+        is withdrawn as pension income (plus any appreciation from capital gains, \
+        dividends, and interest).  For Person 2, the defined benefit pension \
+        is not counted as 'total income'.  Defined benefit pensions are \
+        promises made by employers to pay employees in the future.  \
+        Defined benefits pensions (and also employee contributions to \
+        workplace pensions) show up on T4's as a 'pension adjustment'.  \
+        "),
+    html.H5("Median income"),
+    dcc.Markdown("The *Median income* page is based on statistics from the \
+        [Canadian Income Survey]\
+        (https://www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&Id=1275662).\
+        For the 2018 CIS, the sample size was around \
+        56,000 households.")
 ])
 
 ################
@@ -87,39 +118,63 @@ layout1 = html.Div([
 def get_dropdown_options(items):
     return [{'label': value, 'value': value} for value in items]
 
-
-income_distribution_dropdown = html.Div([
-    dcc.Dropdown(
-        id='page2-year',
-        placeholder="Select year",
-        options=get_dropdown_options(income_distribution_dropdown_values["year_values"]),
-        value=2017,
-    ),
-    dcc.Dropdown(
-        id='page2-geo',
-        placeholder="Select location",
-        options=get_dropdown_options(income_distribution_dropdown_values["geo_values"]),
-        value="Canada"
-    ),
-    dcc.Dropdown(
-        id='page2-age',
-        placeholder="Select age group",
-        options=get_dropdown_options(income_distribution_dropdown_values["age_values"]),
-        value='35 to 44 years',
-    ),
-    dcc.Dropdown(
-        id='page2-sex',
-        placeholder="Select sex",
-        options=get_dropdown_options(income_distribution_dropdown_values["sex_values"]),
-        value="Females"
-        )
+layout2_dropdown_headers = dbc.Row([
+    dbc.Col(html.Div("Select year")),
+    dbc.Col(html.Div("Select location")),
+    dbc.Col(html.Div("Select age group")),
+    dbc.Col(html.Div("Select sex"))
 ])
+layout2_dropdown = dbc.Row([
+    dbc.Col(
+        dcc.Dropdown(
+            id='page2-year',
+            placeholder="Select year",
+            options=get_dropdown_options(
+                income_distribution_dropdown_values["year_values"]),
+            value=2017,
+        ),
+    ),
+    dbc.Col(
+        dcc.Dropdown(
+            id='page2-geo',
+            placeholder="Select location",
+            options=get_dropdown_options(
+                income_distribution_dropdown_values["geo_values"]),
+            value="Canada"
+        ),
+    ),
+    dbc.Col(
+        dcc.Dropdown(
+            id='page2-age',
+            placeholder="Select age group",
+            options=get_dropdown_options(
+                income_distribution_dropdown_values["age_values"]),
+            value='35 to 44 years',
+        ),
+    ),
+    dbc.Col(
+        dcc.Dropdown(
+            id='page2-sex',
+            placeholder="Select sex",
+            options=get_dropdown_options(
+                income_distribution_dropdown_values["sex_values"]),
+            value="Females"
+            )
+    )])
+
 
 layout2 = html.Div([
     html.H3("Income distribution"),
-    income_distribution_dropdown,
-    dcc.Loading(dcc.Graph(id="income-distribution"), type='circle', fullscreen=True),
-    dcc.Loading(dcc.Graph(id="cumulative-distribution"), type='dot')
+    layout2_dropdown_headers,
+    layout2_dropdown,
+    html.Div(
+        dcc.Loading(dcc.Graph(id="income-distribution"), type='circle'),
+        style={'width':'90%'}),
+    html.Div(
+        dcc.Loading(dcc.Graph(id="cumulative-distribution"), type='dot'),
+        style={'width':'90%'}
+    )
+    
     
 ])
 
@@ -155,5 +210,19 @@ median_income_dropdown = html.Div([
 layout3 = html.Div([
     html.H3("Median income"),
     median_income_dropdown,
-    dcc.Loading(dcc.Graph(id="median-income"), type='circle', fullscreen=True)
+    html.Div(
+        dcc.Loading(dcc.Graph(id="median-income"), type='circle', fullscreen=True),
+        style={'width':'90%'})
+])
+
+
+layout4 = html.Div([
+    html.H3("References"),
+    html.Div(dcc.Markdown("\
+        - Statistics Canada \n\
+            - [Tax filers and dependants with income by total income, sex and age](https://doi.org/10.25318/1110000801-eng),\n\
+            - [Income of individuals by age group, sex and income source, Canada, provinces and selected census metropolitan areas](https://doi.org/10.25318/1110023901-eng)\n\
+        - Source code for this webpage is hosted on [Github](https://github.com/BlaneG/CAN-income-stats)\n\
+        "
+    ))
 ])

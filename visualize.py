@@ -11,15 +11,14 @@ from wrangling import (
 
 
 def set_chart_title(plot_type, year, geo, sex, age):
-    subtitle1 = f"{year} total income in {geo} <br>"
-    subtitle2 = f"{sex}, {age}"
+    subtitle = f"{year} total personal income in {geo} for {sex}, {age}<br>"
     if plot_type=="hist":
-        title = "<b>Income distrubution:</b> <br>"
+        title = "<b>Income distrubution</b> <br>"
         
     elif plot_type=="cumulative":
-        title = "<b>Cumulative income distrubution:</b> <br>"
+        title = "<b>Cumulative income distrubution</b> <br>"
         
-    title = title + subtitle1 + subtitle2
+    title = title + subtitle
     return title
 
 def format_bar_chart(plot_type, fig, year, age, sex, geo):
@@ -48,7 +47,9 @@ def create_bar_chart(df, year, age, sex, geo)->go.Figure:
 
 
 def format_scatter_title(sex, age):
-    return f"Median income (2018 dollars) for {', '.join(sex)} aged {age}"
+    title = "<b>Median income</b> <br>"
+    subtitle = f"Total median income (2018 dollars) for {', '.join(sex)} aged {age}"
+    return title + subtitle
 
 def create_scatter_plot(df, sex, age, geo)->go.Figure:
     """
@@ -72,7 +73,7 @@ def create_scatter_plot(df, sex, age, geo)->go.Figure:
     fig.update_yaxes(range=[0, 90000])
     fig.update_layout(title=format_scatter_title(sex, age))
     fig.update_layout(showlegend=True)
-    fig.update_layout(legend_title='Location')
+    fig.update_layout(legend_title='Location and sex')
     
     return fig
     
