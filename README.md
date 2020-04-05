@@ -1,4 +1,4 @@
-# Income distributions in Canada
+# Canadian personal income statistics
 
 ## Summary
 This repository was developed to explore total personal income statistics provided by Statistics Canada.  The main result is a [Dash](https://plotly.com/dash/) application which can be found [here](https://canadian-income-statistics.herokuapp.com/page-3).
