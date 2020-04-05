@@ -1,15 +1,10 @@
-# run this file to 
+# This file is for updating the preprocessed data used in the application.
 import pandas as pd
-from load_data import load_csv_table
+from load_data import load_csv_table, download_raw_data
 from wrangling import (
     subset_for_scatter_plot,
     subset_plot_data_for_income_bins
 )
-
-
-def preprocess_raw_data():
-    preprocess_11100239()
-    preprocess_11100008()
 
 
 def preprocess_11100239():
@@ -38,5 +33,12 @@ def preprocess_11100008():
     df.to_csv(r"data/processed/11100008.csv")
 
 
+def download_and_preprocess_raw_data()->None:
+    download_raw_data(11100239)
+    download_raw_data(11100008)
+    preprocess_11100239()
+    preprocess_11100008()
+
+
 if __name__ == "__main__":
-    preprocess_raw_data()
+    download_and_preprocess_raw_data()

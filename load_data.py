@@ -4,7 +4,7 @@ import os
 import numpy as np
 
 
-def get_csv_zip_url(table_id):
+def get_csv_zip_url(table_id)->str:
     """
     Returns the url for a table_id to extract raw data from Stats Canada.
 
@@ -30,20 +30,20 @@ def get_csv_zip_url(table_id):
     api_call = stats_can_url + func + table_id + language
     response = requests.get(api_call)
     
-    return response.json()['object']#['object']
+    return response.json()['object']
 
 
-def get_table(table_id):
+def download_raw_data(table_id):
     """
-    Download and extract a csv file from a table_id from statistics Canada.
+    Download and extract a csv file using a table_id from statistics Canada.
     """
     zip_file_url = get_csv_zip_url(table_id)
-    print('downloading zipped csv file...')
+    print(f'downloading zipped csv file for {table_id}...')
     zip_csv_response = requests.get(zip_file_url)
     print('download complete')
     zip_csv = zipfile.ZipFile(io.BytesIO(zip_csv_response.content))
-    print('extracting zipped csv file')
-    zip_csv.extractall()
+    print(f'extracting zipped csv file for {table_id}...')
+    zip_csv.extractall("data/raw")
     print('extraction complete')
 
 
