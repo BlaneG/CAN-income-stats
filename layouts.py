@@ -172,34 +172,59 @@ layout2 = html.Div([
 ################
 # Layout 3: median income
 ################
-median_income_dropdown = html.Div([
-    dcc.Dropdown(
-        id='page3-geo',
-        placeholder="Select location",
-        options=get_dropdown_options(median_income_dropdown_values["GEO"]),
-        value=[
-            'Ottawa-Gatineau, Ontario/Quebec',
-            'Vancouver, British Columbia'],
-        multi=True
+
+page_3_dropdown_header = dbc.Row([
+        dbc.Col(html.Div("Select age group")),
+        dbc.Col(html.Div("Select sex")),
+        dbc.Col()
+        ])
+
+page3_dropdown_header_2 = dbc.Row([
+    dbc.Col(html.Div("Select region (hold ctrl for multiple selections)"))])
+
+age_sex_dropdown = dbc.Row([
+    dbc.Col(
+        dcc.Dropdown(
+                id='page3-age',
+                placeholder="Select age group",
+                options=get_dropdown_options(median_income_dropdown_values["Age group"]),
+                value='35 to 44 years',
+            )
     ),
-    dcc.Dropdown(
-        id='page3-age',
-        placeholder="Select age group",
-        options=get_dropdown_options(median_income_dropdown_values["Age group"]),
-        value='35 to 44 years',
+    dbc.Col(
+        dcc.Dropdown(
+            id='page3-sex',
+            placeholder="Select sex",
+            options=get_dropdown_options(median_income_dropdown_values["Sex"]),
+            value=["Males", "Females"],
+            multi=True
+            )
     ),
-    dcc.Dropdown(
-        id='page3-sex',
-        placeholder="Select sex",
-        options=get_dropdown_options(median_income_dropdown_values["Sex"]),
-        value=["Males", "Females"],
-        multi=True
-        )
+    dbc.Col()
 ])
+
+region_dropdown = dbc.Row([
+    dbc.Col(
+        dcc.Dropdown(
+                id='page3-geo',
+                placeholder="Select location",
+                options=get_dropdown_options(
+                    median_income_dropdown_values["GEO"]),
+                value=[
+                    'Ottawa-Gatineau, Ontario/Quebec',
+                    'Vancouver, British Columbia'],
+                multi=True
+            )
+    )
+])
+
 
 layout3 = html.Div([
     html.H3("Median income"),
-    median_income_dropdown,
+    page_3_dropdown_header,
+    age_sex_dropdown,
+    page3_dropdown_header_2,
+    region_dropdown,
     html.Div(
         dcc.Loading(dcc.Graph(id="median-income"), type='circle'),
         style={'width':'100%'})
