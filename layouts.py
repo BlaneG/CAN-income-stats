@@ -122,7 +122,6 @@ layout2_dropdown_headers = dbc.Row([
     dbc.Col(html.Div("Select year")),
     dbc.Col(html.Div("Select location")),
     dbc.Col(html.Div("Select age group")),
-    dbc.Col(html.Div("Select sex"))
 ])
 layout2_dropdown = dbc.Row([
     dbc.Col(
@@ -152,15 +151,7 @@ layout2_dropdown = dbc.Row([
             value='35 to 44 years',
         ),
     ),
-    dbc.Col(
-        dcc.Dropdown(
-            id='page2-sex',
-            placeholder="Select sex",
-            options=get_dropdown_options(
-                income_distribution_dropdown_values["sex_values"]),
-            value="Females"
-            )
-    )])
+])
 
 
 layout2 = html.Div([
@@ -172,7 +163,7 @@ layout2 = html.Div([
         style={'width':'90%'}
         ),
     html.Div(
-        dcc.Graph(id="cumulative-distribution"),
+        dcc.Loading(dcc.Graph(id="cumulative-distribution"), type='circle'),
         style={'width':'90%'}
         )
 ])

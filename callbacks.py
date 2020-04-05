@@ -25,12 +25,11 @@ logger.setLevel(logging.DEBUG)
     Output('cumulative-distribution', 'figure')],
     [Input('page2-year', 'value'),
     Input('page2-age', 'value'),
-    Input('page2-sex', 'value'),
     Input('page2-geo', 'value')])
-def update_income_distribution_plots(year, age, sex, geo):
+def update_income_distribution_plots(year, age, geo):
     sex = ["Males", "Females"]
     df = pd.read_csv(r"data/processed/11100008.csv")
-    logger.debug("year {}, age {}, sex {}, geo {}".format(year, age, sex, geo))
+    logger.debug("year {}, age {}, sex geo {}".format(year, age, sex, geo))
     df = subset_year_age_sex_geo(df, year, age, sex, geo)
     hist, cumulative_plot = create_bar_chart(df, year, age, sex, geo)
     logger.debug("type(hist)")
