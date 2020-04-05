@@ -169,13 +169,12 @@ layout2 = html.Div([
     layout2_dropdown,
     html.Div(
         dcc.Loading(dcc.Graph(id="income-distribution"), type='circle'),
-        style={'width':'90%'}),
-    html.Div(
-        dcc.Graph(id="cumulative-distribution"), type='dot',
         style={'width':'90%'}
-    )
-    
-    
+        ),
+    html.Div(
+        dcc.Graph(id="cumulative-distribution"),
+        style={'width':'90%'}
+        )
 ])
 
 
