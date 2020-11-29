@@ -130,7 +130,7 @@ layout2_dropdown = dbc.Row([
             placeholder="Select year",
             options=get_dropdown_options(
                 income_distribution_dropdown_values["year_values"]),
-            value=2017,
+            value=2018,
         ),
     ),
     dbc.Col(
